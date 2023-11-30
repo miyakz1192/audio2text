@@ -1,0 +1,3 @@
+[submodule "messaging"]
+	path = messaging
+	url = https://github.com/miyakz1192/advsvc_messaging.git
