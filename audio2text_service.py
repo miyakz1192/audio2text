@@ -39,6 +39,13 @@ class Audio2TextService:
 
         return temp_file_path
 
+    def _make_response_and_publish(self, original_record, analy_res):
+        output_text = list(map(lambda x: x[0] + ":" + x[1], analy_res))
+        output_text = "\n".join(output_text)
+        original_record.audio2text = output_text
+        rec = original_record
+        Audio2TextServiceResMessaging().connect_and_basic_publish_record(rec)
+
     def unit_work(self):
         print("Getting new req from queue")
         rec = Audio2TextServiceReqMessaging().connect_and_basic_get_record()
@@ -46,9 +53,12 @@ class Audio2TextService:
             return
 
         temp_audio_file_path = self.make_temp_wavfile(rec)
-        print(self.wap.analyze(temp_audio_file_path))
+        analy_res = self.wap.analyze(temp_audio_file_path)
+        print(analy_res)
         os.remove(temp_audio_file_path)
 
+        self._make_response_and_publish(rec, analy_res)
 
-#print(WhisperAndPyannote().analyze("../rec1.wav"))
+
+# print(WhisperAndPyannote().analyze("../rec1.wav"))
 Audio2TextService().main_loop()

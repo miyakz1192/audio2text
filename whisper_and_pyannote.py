@@ -33,9 +33,8 @@ class WhisperAndPyannote:
 
         return waveform, sample_rate
 
-
     # output is these tuple array
-    # (text(str), speaker name(str), start sec(float), end sec(float))
+    # (speaker name(str), text(str), start sec(float), end sec(float))
     def analyze(self, audio_file_path):
         diarization = self.pipeline(audio_file_path)
         audio = Audio(sample_rate=16000, mono=True)
@@ -47,7 +46,7 @@ class WhisperAndPyannote:
             if waveform is None:
                 continue
             text = self._get_text_from_segment(waveform, sample_rate)
-            rec = (text, speaker, segment.start, segment.end)
+            rec = (speaker, text, segment.start, segment.end)
             print(f"[{segment.start:03.1f}s - {segment.end:03.1f}s] \
                     {speaker}: {text}", flush=True)
             res.append(rec)
@@ -67,7 +66,7 @@ class WhisperAndPyannote:
             print("Data written to the temporary file.", flush=True)
             text = self.model.transcribe(temp_file_path)["text"]
             print("transcribe done", flush=True)
-    
+
         return text
 
 # 上のアルゴリズムだと単純なので、単にmodelに推論させたときよりも、精度が悪いっぽい
