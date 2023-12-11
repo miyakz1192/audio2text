@@ -45,6 +45,7 @@ class Audio2TextService:
         original_record.audio2text = output_text
         rec = original_record
         Audio2TextServiceResMessaging().connect_and_basic_publish_record(rec)
+        print(f"TRACE: one published={rec.audio2text}")
 
     def unit_work(self):
         print("Getting new req from queue")
@@ -54,7 +55,7 @@ class Audio2TextService:
 
         temp_audio_file_path = self.make_temp_wavfile(rec)
         analy_res = self.wap.analyze(temp_audio_file_path)
-        print(analy_res)
+        print(f"TRACE: analy_res={analy_res}")
         os.remove(temp_audio_file_path)
 
         self._make_response_and_publish(rec, analy_res)
