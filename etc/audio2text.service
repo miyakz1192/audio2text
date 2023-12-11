@@ -1,0 +1,13 @@
+[Unit]
+Description=Advice Service audio2text
+
+[Service]
+ExecStart=/home/miyakz/audio2text/boot_audio2text.sh
+Restart=always
+User=miyakz
+
+[Install]
+WantedBy=multi-user.target
+
+
+
