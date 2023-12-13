@@ -5,6 +5,11 @@ Description=Advice Service audio2text
 ExecStart=/home/miyakz/audio2text/boot_audio2text.sh
 Restart=always
 User=miyakz
+RestartSec=5
+StartLimitInterval=10
+StartLimitBurst=10
+
+
 
 [Install]
 WantedBy=multi-user.target
