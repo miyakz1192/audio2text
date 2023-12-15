@@ -41,7 +41,7 @@ class WhisperAndPyannote:
         res = []
         for segment, _, speaker in diarization.itertracks(yield_label=True):
             # waveform, sample_rate = audio.crop(audio_file_path, segment)
-            waveform, sample_rate = self._audio_crop(audio, 
+            waveform, sample_rate = self._audio_crop(audio,
                                                      audio_file_path, segment)
             if waveform is None:
                 continue
@@ -84,3 +84,17 @@ class WhisperAndPyannote:
 # だから、次のSPEAKERの出力を得るために、
 # 前のwavを全部くっつけてmodelに入力させ、
 # その結果から、前得た文字列を取っ払えば、今回得たいものが得られるはず。
+
+
+class WhisperOnly:
+    def __init__(self):
+        self.model = whisper.load_model("large")
+
+    def analyze(self, audio_file_path):
+        text = self.model.transcribe(audio_file_path)["text"]
+        speaker = ""
+        segment_start = 0.0
+        segment_end = 0.0
+        rec = (speaker, text, segment_start, segment_end)
+        print(f"Whisper:{text}", flush=True)
+        return [rec]

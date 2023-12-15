@@ -14,7 +14,8 @@ from messaging import *
 
 class Audio2TextService:
     def __init__(self):
-        self.wap = WhisperAndPyannote()
+        # self.wap = WhisperAndPyannote()
+        self.wap = WhisperOnly()
 
     def main_loop(self):
         while True:
